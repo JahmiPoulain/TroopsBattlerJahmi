@@ -21,14 +21,21 @@ public class GameManagerScript : MonoBehaviour
     {
         
     }
-    public Vector3 FindClosestAlly(Vector3 pos)
+    public GameObject FindClosestAlly(Vector3 pos)
     {
         int alliesCount = alliesOnTerrain.Count;
+        Transform closest = null;
+        float smallestDist = Mathf.Infinity;
         for (int i = 0; i < alliesCount; i++)
         {
-
+             float currentDist = (alliesOnTerrain[i].position - pos).sqrMagnitude;
+            if (currentDist < smallestDist)
+            {
+                smallestDist = currentDist;
+                closest = alliesOnTerrain[i];
+            }
         }
-        return pos;
+        return closest.gameObject;
     }
 
     public Vector3 CheckForCollision(Vector3 pos, float sqrRad)
