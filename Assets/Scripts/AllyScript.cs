@@ -7,23 +7,31 @@ public class AllyScript : MonoBehaviour
     public float speed;
     public float radius;
 
-
     public GameObject currentTarget;
     void Start()
     {
         sphereColliderScript = GetComponent<SphereColliderScript>();
+        sphereColliderScript.isAlly = true;
         sphereColliderScript.SetRadius(radius);
         transform.localScale = Vector3.one * radius;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        currentTarget = GameManagerScript.instance.FindClosestAlly(transform.position);
+        currentTarget = GameManagerScript.instance.FindClosestEnemy(transform.position);
         if (currentTarget != null)
-        {            
-            Vector3 nextPos = transform.position + (currentTarget.transform.position - transform.position).normalized * speed * Time.deltaTime; // la prochaine position
-            transform.position = sphereColliderScript.MoveThere(transform.position, nextPos);
+        {
+            Debug.Log("targeted");
+            try
+            {
+                Vector3 nextPos = transform.position + (currentTarget.transform.position - transform.position).normalized * speed * Time.deltaTime; // la prochaine position
+                transform.position = sphereColliderScript.MoveThere(transform.position, nextPos);
+            }
+            catch 
+            {
+                currentTarget = GameManagerScript.instance.FindClosestEnemy(transform.position);
+            }
+
         }       
     }
 }
